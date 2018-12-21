@@ -25,8 +25,8 @@ public class RedPackServiceImpl implements RedPackService {
 
     @Override
     public RedPack getRedPack(String id) {
-        String listKey = redisTemplate.opsForValue().get(id);
-        String red = redisTemplate.opsForList().rightPopAndLeftPush(listKey, listKey + ":back");
+        //String listKey = redisTemplate.opsForValue().get(id);
+        String red = redisTemplate.opsForList().rightPopAndLeftPush(id, id + ":back");
         try {
             if (Strings.isNotBlank(red)) {
                 RedPack redPack = new ObjectMapper().readValue(red, RedPack.class);

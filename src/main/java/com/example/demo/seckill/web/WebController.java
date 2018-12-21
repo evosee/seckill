@@ -1,7 +1,10 @@
 package com.example.demo.seckill.web;
 
+import com.example.demo.seckill.bean.RedPack;
+import com.example.demo.seckill.service.RedPackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -12,7 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController("/web")
 public class WebController {
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedPackService redPackService;
+
+    @RequestMapping("/v1")
+    public String getRedPack(){
+        RedPack redPack =  redPackService.getRedPack("red:p:1002");
+        if(redPack!=null){
+            System.out.println(redPack.getMoney());
+        }else System.out.println("没了哦");
+
+        return "yes";
+    }
 
 
 }

@@ -19,38 +19,50 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class RedisTest {
     @Autowired
-    private RedisTemplate<String,String> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
     private RedPackService redPackService;
 
     @Test
-    public void test(){
-        redisTemplate.opsForValue().set("hello","world");
+    public void test() {
+        redisTemplate.opsForValue().set("hello", "world");
         System.out.println(redisTemplate.opsForValue().get("hello"));
 
-        stringRedisTemplate.opsForValue().set("string","string");
+        stringRedisTemplate.opsForValue().set("string", "string");
 
     }
 
     @Test
-    public void testP(){
+    public void testP() {
         String key = redPackService.produce("1002");
         //consume(key);
 
     }
 
-    private void consume(String key){
-        while (true){
-            Thread thread = new Thread(()->{
+    @Test
+    public void testC() {
+      //  consume("red:p:1002");
+        RedPack redPack = redPackService.getRedPack("red:p:1002");
+        System.out.println(redPack.getMoney());
+    }
+
+    private void consume(String key) {
+        for (int i = 0; i < 40; i++) {
+
+            Thread thread = new Thread(() -> {
                 RedPack redPack = redPackService.getRedPack(key);
-                if(redPack!=null){
+                if (redPack != null) {
                     System.out.println(redPack.getMoney());
+                } else {
+                    System.out.println("抢完了");
                 }
             });
             thread.start();
+
         }
+
 
     }
 }

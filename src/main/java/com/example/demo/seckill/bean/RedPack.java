@@ -6,6 +6,9 @@ package com.example.demo.seckill.bean;
  * @Version 1.0
  */
 public class RedPack {
+    public RedPack() {
+    }
+
     public RedPack(String redPackId, String money) {
         this.redPackId = redPackId;
         this.money = money;
