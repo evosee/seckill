@@ -41,7 +41,7 @@ public class RedisTest {
 
     @Test
     public void testP() {
-        String key = redPackService.produce("1003");
+        String key = redPackService.produce("1005");
         //consume(key);
 
     }
@@ -49,11 +49,11 @@ public class RedisTest {
     @Test
     public void testThread(){
         System.out.println("123");
-        System.out.println(restTemplate.getForEntity("http://localhost:8080/web/v1?id={0}",String.class,1003));
-        for (int i = 0; i < 40; i++) {
+        System.out.println(restTemplate.getForEntity("http://localhost:8080/web/v1?id={0}",String.class,1005));
+        for (int i = 0; i < 1000; i++) {
 
             Thread thread = new Thread(() -> {
-                System.out.println(restTemplate.getForEntity("http://localhost:8080/web/v1?id={0}",String.class,1003));
+                System.out.println(restTemplate.getForEntity("http://localhost:8080/web/v1?id={0}",String.class,1005));
             });
             thread.start();
 
