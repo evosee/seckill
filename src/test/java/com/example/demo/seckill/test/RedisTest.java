@@ -2,6 +2,7 @@ package com.example.demo.seckill.test;
 
 import com.example.demo.seckill.bean.RedPack;
 import com.example.demo.seckill.service.RedPackService;
+import com.example.demo.seckill.web.WebController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * @Author: chensai
@@ -24,6 +26,9 @@ public class RedisTest {
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
     private RedPackService redPackService;
+    @Autowired
+    private RestTemplate restTemplate;
+
 
     @Test
     public void test() {
@@ -43,9 +48,9 @@ public class RedisTest {
 
     @Test
     public void testC() {
-      //  consume("red:p:1002");
-        RedPack redPack = redPackService.getRedPack("red:p:1002");
-        System.out.println(redPack.getMoney());
+        consume("red:p:1002");
+      //  RedPack redPack = redPackService.getRedPack("red:p:1002");
+       // System.out.println(redPack.getMoney());
     }
 
     private void consume(String key) {
@@ -62,7 +67,19 @@ public class RedisTest {
             thread.start();
 
         }
+    }
 
+    @Test
+    public void testThread(){
+
+        for (int i = 0; i < 40; i++) {
+
+            Thread thread = new Thread(() -> {
+                System.out.println(restTemplate.getForEntity("http://localhost:8080/web/v1",String.class));
+            });
+            thread.start();
+
+        }
 
     }
 }
