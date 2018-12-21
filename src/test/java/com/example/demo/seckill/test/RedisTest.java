@@ -1,5 +1,7 @@
 package com.example.demo.seckill.test;
 
+import com.example.demo.seckill.bean.RedPack;
+import com.example.demo.seckill.service.RedPackService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class RedisTest {
     private RedisTemplate<String,String> redisTemplate;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private RedPackService redPackService;
 
     @Test
     public void test(){
@@ -27,6 +31,26 @@ public class RedisTest {
         System.out.println(redisTemplate.opsForValue().get("hello"));
 
         stringRedisTemplate.opsForValue().set("string","string");
+
+    }
+
+    @Test
+    public void testP(){
+        String key = redPackService.produce("1002");
+        //consume(key);
+
+    }
+
+    private void consume(String key){
+        while (true){
+            Thread thread = new Thread(()->{
+                RedPack redPack = redPackService.getRedPack(key);
+                if(redPack!=null){
+                    System.out.println(redPack.getMoney());
+                }
+            });
+            thread.start();
+        }
 
     }
 }
