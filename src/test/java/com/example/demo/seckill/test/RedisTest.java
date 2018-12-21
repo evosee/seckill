@@ -41,41 +41,19 @@ public class RedisTest {
 
     @Test
     public void testP() {
-        String key = redPackService.produce("1002");
+        String key = redPackService.produce("1003");
         //consume(key);
 
     }
 
     @Test
-    public void testC() {
-        consume("red:p:1002");
-      //  RedPack redPack = redPackService.getRedPack("red:p:1002");
-       // System.out.println(redPack.getMoney());
-    }
-
-    private void consume(String key) {
-        for (int i = 0; i < 40; i++) {
-
-            Thread thread = new Thread(() -> {
-                RedPack redPack = redPackService.getRedPack(key);
-                if (redPack != null) {
-                    System.out.println(redPack.getMoney());
-                } else {
-                    System.out.println("抢完了");
-                }
-            });
-            thread.start();
-
-        }
-    }
-
-    @Test
     public void testThread(){
-
+        System.out.println("123");
+        System.out.println(restTemplate.getForEntity("http://localhost:8080/web/v1?id={0}",String.class,1003));
         for (int i = 0; i < 40; i++) {
 
             Thread thread = new Thread(() -> {
-                System.out.println(restTemplate.getForEntity("http://localhost:8080/web/v1",String.class));
+                System.out.println(restTemplate.getForEntity("http://localhost:8080/web/v1?id={0}",String.class,1003));
             });
             thread.start();
 
