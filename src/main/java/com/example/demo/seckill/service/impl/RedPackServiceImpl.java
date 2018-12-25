@@ -1,4 +1,4 @@
-package com.example.demo.seckill.redis;
+package com.example.demo.seckill.service.impl;
 
 import com.example.demo.seckill.bean.RedPack;
 import com.example.demo.seckill.service.RedPackService;
