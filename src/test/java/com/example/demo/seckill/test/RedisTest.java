@@ -82,7 +82,7 @@ public class RedisTest {
     @Test
     public void testRedisLockThread(){
         System.out.println("redisLock");
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
 
             Thread thread = new Thread(() -> {
                 System.out.println(restTemplate.getForEntity("http://localhost:8080/web/lock",String.class));
@@ -92,7 +92,7 @@ public class RedisTest {
         }
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

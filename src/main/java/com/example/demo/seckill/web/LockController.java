@@ -21,27 +21,30 @@ public class LockController {
     Queue<Integer> queue = new ArrayDeque<>();
 
     @RequestMapping("/lock")
-    public  String getRedPack() {
+    public String getRedPack() {
         String uuid = UUID.randomUUID().toString();
+        if (queue.size() > 0) {
+            try {
 
-        try {
-            if(redisLock.lock(uuid)){
-                //System.out.println("加载成功");
-                System.out.println(queue.poll());
-            }else {
-                System.out.println("获取锁失败");
+                if (redisLock.lock(uuid)) {
+                    //System.out.println("加载成功");
+                    System.out.println(queue.poll());
+                }
+
+            } finally {
+                System.out.println("释放锁：" + redisLock.unlock(uuid));
             }
-
-        } finally {
-            System.out.println("释放锁："+redisLock.unlock(uuid));
+        }else{
+            System.out.println("没了哦");
         }
+
 
         return "yes";
     }
 
     @RequestMapping("/lock/producer")
     public String producer() {
-        for(int i=0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             queue.add(i);
         }
         return "success";
