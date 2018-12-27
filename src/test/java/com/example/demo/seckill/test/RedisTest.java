@@ -81,8 +81,7 @@ public class RedisTest {
 
     @Test
     public void testRedisLockThread(){
-        System.out.println("redisLock");
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1; i++) {
 
             Thread thread = new Thread(() -> {
                 System.out.println(restTemplate.getForEntity("http://localhost:8080/web/lock",String.class));
@@ -93,6 +92,29 @@ public class RedisTest {
 
         try {
             Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testPZookeeperLock(){
+        System.out.println(restTemplate.getForEntity("http://localhost:8080/zoo/lock/producer",String.class));
+    }
+
+    @Test
+    public void testZookeeperThread(){
+        for (int i = 0; i < 100; i++) {
+
+            Thread thread = new Thread(() -> {
+                System.out.println(restTemplate.getForEntity("http://localhost:8080/zoo/lock",String.class));
+            });
+            thread.start();
+
+        }
+
+        try {
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
