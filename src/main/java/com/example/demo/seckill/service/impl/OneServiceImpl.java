@@ -20,6 +20,7 @@ public class OneServiceImpl implements OneService {
 
 
     @Override
+    @Transactional
     public void save(OneBean oneBean) {
         oneDao.save(oneBean);
     }
